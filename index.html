@@ -318,14 +318,19 @@
     }
 
     function buildBoard() {
-      for (let square = 1; square <= 100; square++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.dataset.square = square;
-        if (square === 1) cell.classList.add("start");
-        if (square === 100) cell.classList.add("finish");
-        cell.innerHTML = `<span class="number">${square}</span>`;
-        board.prepend(cell);
+      for (let rowFromBottom = 9; rowFromBottom >= 0; rowFromBottom--) {
+        for (let column = 0; column < 10; column++) {
+          const square = rowFromBottom % 2 === 0
+            ? rowFromBottom * 10 + column + 1
+            : rowFromBottom * 10 + 10 - column;
+          const cell = document.createElement("div");
+          cell.className = "cell";
+          cell.dataset.square = square;
+          if (square === 1) cell.classList.add("start");
+          if (square === 100) cell.classList.add("finish");
+          cell.innerHTML = `<span class="number">${square}</span>`;
+          board.append(cell);
+        }
       }
       Object.entries(ladders).forEach(([from, to]) => makeRoute(Number(from), Number(to), "ladder"));
       Object.entries(snakes).forEach(([from, to]) => makeRoute(Number(from), Number(to), "snake"));
